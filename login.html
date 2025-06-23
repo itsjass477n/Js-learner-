@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      padding: 25px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00c853;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .error-box {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 18px;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .error-box.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Login</h2>
+    <input id="mobile" type="text" placeholder="Mobile Number" />
+    <input id="password" type="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="errorBox" class="error-box" onclick="hideError()">Incorrect mobile number or password.<br><br><b>Tap anywhere to close</b></div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7Q12toF3t7NjwlimcDjqMQSvvP0Cufsc",
+      authDomain: "new-shopping-bb7a9.firebaseapp.com",
+      databaseURL: "https://new-shopping-bb7a9-default-rtdb.firebaseio.com",
+      projectId: "new-shopping-bb7a9",
+      storageBucket: "new-shopping-bb7a9.appspot.com",
+      messagingSenderId: "555093095612",
+      appId: "1:555093095612:web:7a12c87d20ce8707c64cb9"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ✅ Skip login if already logged in
+    if (localStorage.getItem("username")) {
+      window.location.href = "home.html";
+    }
+
+    function login() {
+      const mobile = document.getElementById("mobile").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!mobile || !password) {
+        showError("Please fill all fields.");
+        return;
+      }
+
+      db.ref("users").once("value").then(snapshot => {
+        let found = false;
+        snapshot.forEach(child => {
+          const user = child.val();
+          if (user.mobile === mobile && user.password === password) {
+            found = true;
+            localStorage.setItem("username", child.key);
+            window.location.href = "home.html";
+          }
+        });
+
+        if (!found) {
+          showError("Incorrect mobile number or password.");
+        }
+      }).catch(err => {
+        showError("Firebase error: " + err.message);
+      });
+    }
+
+    function showError(message) {
+      const box = document.getElementById("errorBox");
+      box.innerHTML = message + "<br><br><b>Tap anywhere to close</b>";
+      box.classList.add("show");
+    }
+
+    function hideError() {
+      document.getElementById("errorBox").classList.remove("show");
+    }
+  </script>
+
+</body>
+</html>

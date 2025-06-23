@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 10px;
+      font-size: 24px;
+    }
+
+    .note-box {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      word-wrap: break-word;
+    }
+
+    .note-box p {
+      font-size: 16px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📌 NOTES</h2>
+  <div id="notes"></div>
+
+  <script>
+    // 🔥 Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7Q12toF3t7NjwlimcDjqMQSvvP0Cufsc",
+      authDomain: "new-shopping-bb7a9.firebaseapp.com",
+      databaseURL: "https://new-shopping-bb7a9-default-rtdb.firebaseio.com",
+      projectId: "new-shopping-bb7a9",
+      storageBucket: "new-shopping-bb7a9.appspot.com",
+      messagingSenderId: "555093095612",
+      appId: "1:555093095612:web:7a12c87d20ce8707c64cb9"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const notesRef = db.ref("notifications");
+
+    notesRef.on("value", (snapshot) => {
+      const notesDiv = document.getElementById("notes");
+      notesDiv.innerHTML = ""; // Clear previous notes
+
+      if (snapshot.exists()) {
+        snapshot.forEach((child) => {
+          const note = child.val();
+          const noteBox = document.createElement("div");
+          noteBox.className = "note-box";
+          noteBox.innerHTML = `<p>${note.text}</p>`;
+          notesDiv.appendChild(noteBox);
+        });
+      } else {
+        notesDiv.innerHTML = "<p>No notes yet.</p>";
+      }
+    });
+  </script>
+
+</body>
+</html>

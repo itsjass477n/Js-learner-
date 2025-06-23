@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+      position: relative;
+    }
+
+    .bell {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 15px 0;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #4a00e0;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #eeeeee;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bell" onclick="location.href='notification.html'">🔔</div>
+
+  <div class="container">
+    <h2>Welcome</h2>
+    <button class="btn" onclick="location.href='physics.html'">Physics</button>
+    <button class="btn" onclick="location.href='maths.html'">Maths</button>
+    <button class="btn" onclick="location.href='chemistry.html'">Chemistry</button>
+  </div>
+
+</body>
+</html>
